@@ -94,8 +94,8 @@ main(int argc, char* argv[])
     std::string flow_name("n-node-ppp.xml");
     std::string anim_name("n-node-ppp.anim.xml");
 
-    std::string adj_mat_file_name("examples/matrix-topology/adjacency_matrix.txt");
-    std::string node_coordinates_file_name("examples/matrix-topology/node_coordinates.txt");
+    std::string adj_mat_file_name("/home/wkli/ns3-datacenter/simulator/ns-3.39/examples/matrix-topology/adjacency_matrix.txt");
+    std::string node_coordinates_file_name("/home/wkli/ns3-datacenter/simulator/ns-3.39/examples/matrix-topology/node_coordinates.txt");
 
     CommandLine cmd(__FILE__);
     cmd.Parse(argc, argv);

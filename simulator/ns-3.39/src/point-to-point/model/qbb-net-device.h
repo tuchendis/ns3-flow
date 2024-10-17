@@ -30,7 +30,7 @@
 #include "ns3/udp-header.h"
 #include "ns3/rdma-queue-pair.h"
 #include <vector>
-#include<map>
+#include <map>
 // #include <ns3/rdma.h>
 // #define ENABLE_QP 1
 

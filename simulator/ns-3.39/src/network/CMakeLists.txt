@@ -13,6 +13,7 @@ set(source_files
     model/channel-list.cc
     model/channel.cc
     model/chunk.cc
+    model/flow.cc
     model/header.cc
     model/net-device.cc
     model/nix-vector.cc
@@ -96,6 +97,7 @@ set(header_files
     model/channel-list.h
     model/channel.h
     model/chunk.h
+    model/flow.h
     model/header.h
     model/net-device.h
     model/nix-vector.h
@@ -122,6 +124,7 @@ set(header_files
     utils/ethernet-header.h
     utils/ethernet-trailer.h
     utils/flow-id-tag.h
+    utils/flow-queue.h
     utils/generic-phy.h
     utils/inet-socket-address.h
     utils/inet6-socket-address.h

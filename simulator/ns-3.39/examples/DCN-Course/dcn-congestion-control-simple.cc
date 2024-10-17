@@ -124,9 +124,9 @@ main (int argc, char *argv[])
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Prepare the necessary output streams
 
-	cwndOutput[0] = "./examples/DCN-Course/cwnd_0.csv";
-	cwndOutput[1] = "./examples/DCN-Course/cwnd_1.csv";
-	bottlenckOutput = "./examples/DCN-Course/queue.csv";
+	cwndOutput[0] = "/home/wkli/ns3-datacenter/simulator/ns-3.39/examples/DCN-Course/cwnd_0.csv";
+	cwndOutput[1] = "/home/wkli/ns3-datacenter/simulator/ns-3.39/examples/DCN-Course/cwnd_1.csv";
+	bottlenckOutput = "/home/wkli/ns3-datacenter/simulator/ns-3.39/examples/DCN-Course/queue.csv";
 
 	windowOutput[0] = asciiTraceHelper.CreateFileStream (cwndOutput[0]);
 	windowOutput[1] = asciiTraceHelper.CreateFileStream (cwndOutput[1]);

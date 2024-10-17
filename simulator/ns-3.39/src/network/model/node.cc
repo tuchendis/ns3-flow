@@ -411,7 +411,7 @@ Node::NotifyDeviceAdded(Ptr<NetDevice> device)
 
 /* Modification */
 uint32_t 
-Node::GetNodeType()
+Node:: GetNodeType()
 {
   return m_node_type;
 }

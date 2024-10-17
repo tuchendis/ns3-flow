@@ -1,2 +1,7 @@
 build/*
 cmake-cache/
+cmake-build-debug/
+.idea/
+examples/PowerTCP/results_burst
+fcts.txt
+tor.txt

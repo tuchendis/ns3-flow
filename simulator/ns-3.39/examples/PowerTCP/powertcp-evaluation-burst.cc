@@ -409,14 +409,14 @@ int main(int argc, char *argv[])
 
 	uint32_t algorithm = 3;
 	uint32_t windowCheck = 1;
-	std::string confFile = "/home/vamsi/src/phd/codebase/ns3-datacenter/simulator/ns-3.39/examples/PowerTCP/config-burst.txt";
+	std::string confFile = "/home/wkli/ns3-datacenter/simulator/ns-3.39/examples/PowerTCP/config-burst.txt";
 	std::cout << confFile;
 	CommandLine cmd;
 	cmd.AddValue("conf", "config file path", confFile);
 	cmd.AddValue("wien", "enable wien --> wien enables PowerTCP.", wien);
 	cmd.AddValue("delayWien", "enable wien delay --> delayWien enables Theta-PowerTCP (delaypowertcp) ", delayWien);
 
-	cmd.AddValue ("algorithm", "specify CC mode. This is added for my convinience. I prefer cmd rather than parsing files.", algorithm);
+	cmd.AddValue ("algorithm", "specify CC mode. This is added for my convenience. I prefer cmd rather than parsing files.", algorithm);
 	cmd.AddValue("windowCheck", "windowCheck", windowCheck);
 
 	cmd.Parse (argc, argv);

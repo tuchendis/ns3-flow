@@ -36,6 +36,7 @@ build_lib(
     model/switch-mmu.cc
     model/switch-node.cc
     helper/qbb-helper.cc
+    model/flow-point-to-point-channel.cc
   HEADER_FILES
     ${mpi_headers}
     helper/point-to-point-helper.h
@@ -55,6 +56,9 @@ build_lib(
     model/switch-mmu.h
     model/switch-node.h
     model/trace-format.h
+    model/flow-point-to-point-channel.h
+    model/flow-point-to-point-net-device.h
+    model/logical-flow-channel.h
     helper/qbb-helper.h
     helper/sim-setting.h
   LIBRARIES_TO_LINK ${libnetwork}
