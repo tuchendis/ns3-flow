@@ -407,6 +407,11 @@ OnOffApplication::SendPacket()
     ScheduleNextTx();
 }
 
+void OnOffApplication::SendFlow() {
+    Ptr<Flow> flow = CreateObject<Flow>();
+
+}
+
 void
 OnOffApplication::ConnectionSucceeded(Ptr<Socket> socket)
 {

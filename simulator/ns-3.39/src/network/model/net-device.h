@@ -22,8 +22,10 @@
 
 #include "address.h"
 #include "packet.h"
+#include "flow.h"
 
 #include "ns3/callback.h"
+#include "ns3/data-rate.h"
 #include "ns3/ipv4-address.h"
 #include "ns3/ipv6-address.h"
 #include "ns3/object.h"

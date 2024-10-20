@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <ns3/node.h>
+#include <ns3/flow.h>
 #include "qbb-net-device.h"
 #include "switch-mmu.h"
 #include "pint.h"
@@ -38,8 +39,6 @@ protected:
 	bool PowerEnabled;
 
 private:
-	int GetOutDev(Ptr<const Packet>, CustomHeader &ch);
-	void SendToDev(Ptr<Packet>p, CustomHeader &ch);
 	static uint32_t EcmpHash(const uint8_t* key, size_t len, uint32_t seed);
 	void CheckAndSendPfc(uint32_t inDev, uint32_t qIndex);
 	void CheckAndSendResume(uint32_t inDev, uint32_t qIndex);
@@ -53,6 +52,11 @@ public:
 	void ClearTable();
 	bool SwitchReceiveFromDevice(Ptr<NetDevice> device, Ptr<Packet> packet, CustomHeader &ch);
 	void SwitchNotifyDequeue(uint32_t ifIndex, uint32_t qIndex, Ptr<Packet> p);
+    bool SwitchReceiveFromDevice(Ptr<NetDevice> device, Ptr<Flow> flow, DataRate rate);
+    int GetOutDev(Ptr<const Packet>p, CustomHeader &ch);
+    void SendToDev(Ptr<Packet>p, CustomHeader &ch);
+    int GetOutDev(Ptr<const Flow> f);
+    bool SendToDev(Ptr<Flow> f, DataRate rate);
 
 	// for approximate calc in PINT
 	int logres_shift(int b, int l);

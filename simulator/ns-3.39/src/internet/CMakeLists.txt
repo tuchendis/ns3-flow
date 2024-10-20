@@ -155,6 +155,7 @@ set(header_files
     model/global-route-manager-impl.h
     model/global-route-manager.h
     model/global-router-interface.h
+    model/global-routing-table.h
     model/icmpv4-l4-protocol.h
     model/icmpv4.h
     model/icmpv6-header.h

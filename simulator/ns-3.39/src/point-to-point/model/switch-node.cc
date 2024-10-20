@@ -1,5 +1,6 @@
 #include "ns3/ipv4.h"
 #include "ns3/packet.h"
+#include "ns3/flow.h"
 #include "ns3/ipv4-header.h"
 #include "ns3/pause-header.h"
 #include "ns3/interface-tag.h"
@@ -108,6 +109,30 @@ int SwitchNode::GetOutDev(Ptr<const Packet> p, CustomHeader &ch) {
 	return nexthops[idx];
 }
 
+int SwitchNode::GetOutDev(Ptr<const ns3::Flow> f) {
+    auto fiveTuple = f->GetFiveTuple();
+    auto entry = m_rtTable.find(fiveTuple.destinationAddress.Get());
+    if (entry == m_rtTable.end()) {
+        return -1;
+    }
+
+    auto &nextHops = entry->second;
+
+    // pick one next hop based on hash
+    union {
+        uint8_t u8[4 + 4 + 2 + 2];
+        uint32_t u32[3];
+    } buf;
+    buf.u32[0] = fiveTuple.sourceAddress.Get();
+    buf.u32[1] = fiveTuple.destinationAddress.Get();
+    if (fiveTuple.protocol == 0x6) {
+        buf.u32[2] = fiveTuple.sourcePort | ((uint32_t)fiveTuple.destinationPort << 16);
+    }
+
+    uint32_t idx = EcmpHash(buf.u8, 12, m_ecmpSeed) % nextHops.size();
+    return nextHops[idx];
+}
+
 void SwitchNode::CheckAndSendPfc(uint32_t inDev, uint32_t qIndex) {
 	Ptr<QbbNetDevice> device = DynamicCast<QbbNetDevice>(m_devices[inDev]);
 	if (m_mmu->CheckShouldPause(inDev, qIndex)) {
@@ -176,6 +201,19 @@ void SwitchNode::SendToDev(Ptr<Packet>p, CustomHeader &ch) {
 	return; // Drop
 }
 
+bool SwitchNode::SendToDev(Ptr<ns3::Flow> f, DataRate rate) {
+    int idx = GetOutDev(f);
+    if (idx >= 0) {
+        NS_ASSERT_MSG(m_devices[idx]->IsLinkUp(),
+                      "The routing table look up should return link that is up");
+        DynamicCast<QbbNetDevice>(m_devices[idx])->SendFlow(f, rate);
+        return true;
+    }
+
+    std::cout << "outdev not found! Dropped. This should not happen. Debugging required!" << std::endl;
+    return false; // Drop
+}
+
 uint32_t SwitchNode::EcmpHash(const uint8_t* key, size_t len, uint32_t seed) {
 	uint32_t h = seed;
 	if (len > 3) {
@@ -231,6 +269,10 @@ void SwitchNode::ClearTable() {
 bool SwitchNode::SwitchReceiveFromDevice(Ptr<NetDevice> device, Ptr<Packet> packet, CustomHeader &ch) {
 	SendToDev(packet, ch);
 	return true;
+}
+
+bool SwitchNode::SwitchReceiveFromDevice(Ptr<ns3::NetDevice> device, Ptr<ns3::Flow> flow, ns3::DataRate rate) {
+    return SendToDev(flow, rate);
 }
 
 void SwitchNode::SwitchNotifyDequeue(uint32_t ifIndex, uint32_t qIndex, Ptr<Packet> p) {

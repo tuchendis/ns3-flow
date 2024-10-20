@@ -951,6 +951,10 @@ TcpSocketBase::Send(Ptr<Packet> p, uint32_t flags)
     }
 }
 
+int TcpSocketBase::SendFlow(Ptr<ns3::Flow> f, ns3::DataRate rate) {
+    throw std::runtime_error("doSomething is not supported in UnsupportedDerived");
+}
+
 /* Inherit from Socket class: In TcpSocketBase, it is same as Send() call */
 int
 TcpSocketBase::SendTo(Ptr<Packet> p, uint32_t flags, const Address& /* address */)

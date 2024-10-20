@@ -1,5 +1,4 @@
-#include "flow-point-to-point-channel.h"
-#include "flow-point-to-point-net-device.h"
+#include "ns3/flow-point-to-point-channel.h"
 namespace ns3 {
 
 NS_LOG_COMPONENT_DEFINE("FlowPointToPointChannel");
@@ -11,27 +10,25 @@ TypeId FlowPointToPointChannel::GetTypeId(void) {
   return tid;
 }
 
+std::size_t FlowPointToPointChannel::GetNDevices() const {
+  return N_DEVICES;
+}
+
+Ptr<NetDevice> FlowPointToPointChannel::GetDevice(std::size_t i) const {
+  return DynamicCast<PointToPointChannel>(m_channels[0])->GetDevice(i);
+}
+
+void FlowPointToPointChannel::Attach(Ptr<ns3::PointToPointNetDevice> device) {
+  DynamicCast<PointToPointChannel>(m_channels[0])->Attach(device);
+  DynamicCast<LogicalFlowChannel>(m_channels[1])->Attach(device);
+}
+
 FlowPointToPointChannel::FlowPointToPointChannel()
-  : m_channels() {
-    NS_LOG_FUNCTION_NOARGS();
-}
-
-Ptr<FlowPointToPointNetDevice>
-FlowPointToPointChannel::GetFlowPointToPointDevice (std::size_t i) const {
-    NS_LOG_FUNCTION_NOARGS ();
-    NS_ASSERT (i < 2);
-    return m_link[i].m_src;
-}
-
-Ptr<NetDevice>
-FlowPointToPointChannel::GetDevice(std::size_t i) const {
-  NS_LOG_FUNCTION_NOARGS ();
-  return m_link[i].m_src;
-}
-
-std::size_t FlowPointToPointChannel::GetNDevices(void) const {
+  : m_nDevices(N_DEVICES),
+    m_channels(N_CHANNELS) {
   NS_LOG_FUNCTION_NOARGS();
-  return m_nDevices;
+  m_channels.push_back(CreateObject<PointToPointChannel>());
+  m_channels.push_back(CreateObject<LogicalFlowChannel>());
 }
 
 } // namespace ns3

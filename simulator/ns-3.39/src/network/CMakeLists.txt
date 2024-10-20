@@ -124,8 +124,7 @@ set(header_files
     utils/ethernet-header.h
     utils/ethernet-trailer.h
     utils/flow-id-tag.h
-    utils/flow-queue.h
-    utils/generic-phy.h
+        utils/generic-phy.h
     utils/inet-socket-address.h
     utils/inet6-socket-address.h
     utils/ipv4-address.h

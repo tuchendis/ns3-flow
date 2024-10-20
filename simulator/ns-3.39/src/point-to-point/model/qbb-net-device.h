@@ -24,6 +24,7 @@
 #include "ns3/qbb-channel.h"
 //#include "ns3/fivetuple.h"
 #include "ns3/event-id.h"
+#include "ns3/logical-flow-channel.h"
 #include "ns3/broadcom-egress-queue.h"
 #include "ns3/ipv4.h"
 #include "ns3/ipv4-header.h"
@@ -173,6 +174,21 @@ public:
 		return temp;
 	}
 
+    /**
+     * Modification
+     * Wenkai Li
+     */
+    bool Attach(Ptr<LogicalFlowChannel> ch);
+
+    virtual void ReceiveFlow(Ptr<Flow> flow, DataRate rate);
+
+    virtual void SendFlow(Ptr<Flow> flow, DataRate rate);
+
+    typedef Callback<bool, Ptr<NetDevice>, Ptr<const Flow>, DataRate>
+        ReceiveFlowCallback;
+
+    virtual void SetReceiveFlowCallback(ReceiveFlowCallback cb);
+
 protected:
 
 	//Ptr<Node> m_node;
@@ -204,7 +220,6 @@ protected:
   Ptr<BEgressQueue> m_queue;
 
   Ptr<DropTailQueue<Packet>> m_queueFifo;
-
 
   Ptr<QbbChannel> m_channel;
   
@@ -256,6 +271,16 @@ public:
 	TracedCallback<Ptr<const Packet>, Ptr<RdmaQueuePair> > m_traceQpDequeue; // the trace for printing dequeue
 
 	uint64_t hostDequeueIndex;
+
+    /**
+     * Modification
+     * Wenkai Li
+     */
+    ReceiveFlowCallback m_rxFlowCallback;
+
+    std::map<Flow::FiveTuple, DataRate> m_flows; // Input flow rate
+    Ptr<LogicalFlowChannel> m_logicalChannel; // flow channel
+    DataRate m_totalInputRate;
 };
 
 } // namespace ns3

@@ -295,6 +295,14 @@ class Node : public Object
                            bool promisc);
 
     /**
+     * Modification
+     * Wenkai Li
+     */
+    bool ReceiveFlowFromDevice(Ptr<NetDevice> device,
+                           Ptr<const Flow> flow,
+                           DataRate rate);
+
+    /**
      * \brief Finish node's construction by setting the correct node ID.
      */
     void Construct();
@@ -327,6 +335,7 @@ class Node : public Object
 public:
   virtual bool SwitchReceiveFromDevice(Ptr<NetDevice> device, Ptr<Packet> packet, CustomHeader &ch);
   virtual void SwitchNotifyDequeue(uint32_t ifIndex, uint32_t qIndex, Ptr<Packet> p);
+  virtual bool SwitchReceiveFromDevice(Ptr<NetDevice> device, Ptr<Flow> flow, DataRate rate);
 /* Modification */
 };
 

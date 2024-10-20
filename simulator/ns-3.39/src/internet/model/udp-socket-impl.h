@@ -106,6 +106,7 @@ class UdpSocketImpl : public UdpSocket
     int Listen() override;
     uint32_t GetTxAvailable() const override;
     int Send(Ptr<Packet> p, uint32_t flags) override;
+    int SendFlow(Ptr<Flow> f, DataRate rate) override;
     int SendTo(Ptr<Packet> p, uint32_t flags, const Address& address) override;
     uint32_t GetRxAvailable() const override;
     Ptr<Packet> Recv(uint32_t maxSize, uint32_t flags) override;
@@ -257,6 +258,8 @@ class UdpSocketImpl : public UdpSocket
         m_icmpCallback; //!< ICMP callback
     Callback<void, Ipv6Address, uint8_t, uint8_t, uint8_t, uint32_t>
         m_icmpCallback6; //!< ICMPv6 callback
+    uint32_t m_flowId;
+    uint32_t m_priorCustom;
 
     Address m_defaultAddress;                      //!< Default address
     uint16_t m_defaultPort;                        //!< Default port

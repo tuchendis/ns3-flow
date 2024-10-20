@@ -691,4 +691,39 @@ void QbbNetDevice::UpdateNextAvail(Time t) {
 		m_nextSend = Simulator::Schedule(delta, &QbbNetDevice::DequeueAndTransmit, this);
 	}
 }
+
+bool QbbNetDevice::Attach(Ptr<ns3::LogicalFlowChannel> ch) {
+    NS_LOG_FUNCTION(this << &ch);
+    m_logicalChannel = ch;
+    m_logicalChannel->Attach(this);
+    NotifyLinkUp();
+    return true;
+}
+
+void QbbNetDevice::ReceiveFlow(Ptr<ns3::Flow> flow, DataRate rate) {
+    NS_LOG_FUNCTION(this << flow);
+    if (!m_linkUp) {
+        //        m_traceDrop(flow, 0);
+        return;
+    }
+
+    if (m_node->GetNodeType() > 0) {
+        m_node->SwitchReceiveFromDevice(this, flow, rate);
+    } else {
+        //        m_rxFlowCallback()
+    }
+}
+
+void QbbNetDevice::SendFlow(Ptr<ns3::Flow> flow, DataRate rate) {
+    if (!m_linkUp) {
+        return;
+    }
+    m_logicalChannel->Transmit(flow, rate);
+}
+
+void
+QbbNetDevice::SetReceiveFlowCallback(ns3::QbbNetDevice::ReceiveFlowCallback cb) {
+    m_rxFlowCallback = cb;
+}
+
 } // namespace ns3

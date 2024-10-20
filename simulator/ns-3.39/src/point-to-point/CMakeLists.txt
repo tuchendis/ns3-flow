@@ -24,6 +24,8 @@ build_lib(
     model/point-to-point-net-device.cc
     model/ppp-header.cc
     model/cn-header.cc
+    model/flow-point-to-point-channel.cc
+    model/logical-flow-channel.cc
     model/pause-header.cc
     model/pint.cc
     model/qbb-channel.cc
@@ -36,7 +38,6 @@ build_lib(
     model/switch-mmu.cc
     model/switch-node.cc
     helper/qbb-helper.cc
-    model/flow-point-to-point-channel.cc
   HEADER_FILES
     ${mpi_headers}
     helper/point-to-point-helper.h
@@ -57,7 +58,6 @@ build_lib(
     model/switch-node.h
     model/trace-format.h
     model/flow-point-to-point-channel.h
-    model/flow-point-to-point-net-device.h
     model/logical-flow-channel.h
     helper/qbb-helper.h
     helper/sim-setting.h

@@ -33,11 +33,14 @@
 #include "ipv6.h"
 #include "udp-l4-protocol.h"
 
+#include "ns3/flow.h"
 #include "ns3/inet-socket-address.h"
 #include "ns3/inet6-socket-address.h"
 #include "ns3/log.h"
 #include "ns3/node.h"
+#include "ns3/switch-node.h"
 #include "ns3/trace-source-accessor.h"
+#include "ns3/uinteger.h"
 
 #include <limits>
 
@@ -75,7 +78,15 @@ UdpSocketImpl::GetTypeId()
                           "Callback invoked whenever an icmpv6 error is received on this socket.",
                           CallbackValue(),
                           MakeCallbackAccessor(&UdpSocketImpl::m_icmpCallback6),
-                          MakeCallbackChecker());
+                          MakeCallbackChecker())
+            .AddAttribute("flowId", "flow",
+                          UintegerValue(0),
+                          MakeUintegerAccessor(&UdpSocketImpl::m_flowId),
+                          MakeUintegerChecker<uint32_t>())
+            .AddAttribute("mypriority", "mypriority",
+                          UintegerValue(0),
+                          MakeUintegerAccessor(&UdpSocketImpl::m_priorCustom),
+                          MakeUintegerChecker<uint32_t>());
     return tid;
 }
 
@@ -456,6 +467,17 @@ UdpSocketImpl::Send(Ptr<Packet> p, uint32_t flags)
     }
 
     return DoSend(p);
+}
+
+int UdpSocketImpl::SendFlow(Ptr<ns3::Flow> f, ns3::DataRate rate) {
+    Ipv4Address dest = Ipv4Address::ConvertFrom(m_defaultAddress);
+    Flow::FiveTuple fiveTuple(m_endPoint->GetLocalAddress(),
+        dest,
+        m_endPoint->GetLocalPort(),
+        m_defaultPort,
+        0x11);
+    f->SetFiveTuple(fiveTuple);
+    DynamicCast<SwitchNode>(m_node)->SendToDev(f, rate);
 }
 
 int

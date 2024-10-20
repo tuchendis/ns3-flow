@@ -376,6 +376,8 @@ class Socket : public Object
      */
     virtual int Send(Ptr<Packet> p, uint32_t flags) = 0;
 
+    virtual int SendFlow(Ptr<Flow> f, DataRate rate) = 0;
+
     /**
      * \brief Send data to a specified peer.
      *

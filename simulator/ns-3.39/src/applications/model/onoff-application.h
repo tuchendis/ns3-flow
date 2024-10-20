@@ -158,6 +158,11 @@ class OnOffApplication : public Application
      */
     void SendPacket();
 
+    /** Modification
+     * Wenkai Li
+     */
+    void SendFlow();
+
     Ptr<Socket> m_socket;                //!< Associated socket
     Address m_peer;                      //!< Peer address
     Address m_local;                     //!< Local address to bind to

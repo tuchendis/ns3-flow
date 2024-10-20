@@ -30,6 +30,7 @@
 #include "ns3/log.h"
 #include "ns3/object-vector.h"
 #include "ns3/packet.h"
+#include "ns3/qbb-net-device.h"
 #include "ns3/simulator.h"
 #include "ns3/uinteger.h"
 
@@ -143,6 +144,10 @@ Node::AddDevice(Ptr<NetDevice> device)
     device->SetNode(this);
     device->SetIfIndex(index);
     device->SetReceiveCallback(MakeCallback(&Node::NonPromiscReceiveFromDevice, this));
+    QbbNetDevice* nd_ptr = dynamic_cast<QbbNetDevice *>(PeekPointer(device));
+    if (nd_ptr != nullptr) { // this device is QbbNetDevice
+        Ptr<QbbNetDevice>(nd_ptr)->SetReceiveFlowCallback(MakeCallback(&Node::ReceiveFlowFromDevice, this));
+    }
     Simulator::ScheduleWithContext(GetId(), Seconds(0.0), &NetDevice::Initialize, device);
     NotifyDeviceAdded(device);
     return index;
@@ -368,6 +373,11 @@ Node::ReceiveFromDevice(Ptr<NetDevice> device,
     return found;
 }
 
+bool Node::ReceiveFlowFromDevice(Ptr<ns3::NetDevice> device, Ptr<const ns3::Flow> flow, DataRate rate) {
+    std::cout << "Receive from " << flow->GetFiveTuple().sourceAddress << std::endl;
+    return true;
+}
+
 void
 Node::RegisterDeviceAdditionListener(DeviceAdditionListener listener)
 {
@@ -422,6 +432,10 @@ bool Node::SwitchReceiveFromDevice(Ptr<NetDevice> device, Ptr<Packet> packet, Cu
 
 void Node::SwitchNotifyDequeue(uint32_t ifIndex, uint32_t qIndex, Ptr<Packet> p){
   NS_ASSERT_MSG(false, "Calling NotifyDequeue() on a non-switch node or this function is not implemented");
+}
+
+bool Node::SwitchReceiveFromDevice(Ptr<ns3::NetDevice> device, Ptr<ns3::Flow> flow, ns3::DataRate rate) {
+  NS_ASSERT_MSG(false, "Calling SwitchReceiveFromDevice() on a non-switch node or this function is not implemented");
 }
 /* Modification */ 
 

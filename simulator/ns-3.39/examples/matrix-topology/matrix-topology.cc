@@ -72,6 +72,7 @@ main(int argc, char* argv[])
     // ---------- Simulation Variables ------------------------------------------
 
     // Change the variables and file names only in this block!
+    LogComponentEnable("GenericTopologyCreation", LOG_LEVEL_INFO);
 
     double SimTime = 3.00;
     double SinkStartTime = 1.0001;
