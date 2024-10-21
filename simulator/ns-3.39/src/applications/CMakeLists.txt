@@ -3,12 +3,14 @@ build_lib(
   SOURCE_FILES
     helper/bulk-send-helper.cc
     helper/on-off-helper.cc
+    helper/flow-onoff-helper.cc
     helper/packet-sink-helper.cc
     helper/three-gpp-http-helper.cc
     helper/udp-client-server-helper.cc
     helper/udp-echo-helper.cc
     model/application-packet-probe.cc
     model/bulk-send-application.cc
+    model/flow-onoff-application.cc
     model/onoff-application.cc
     model/packet-loss-counter.cc
     model/packet-sink.cc
@@ -28,12 +30,15 @@ build_lib(
   HEADER_FILES
     helper/bulk-send-helper.h
     helper/on-off-helper.h
+    helper/flow-onoff-helper.h
     helper/packet-sink-helper.h
     helper/three-gpp-http-helper.h
     helper/udp-client-server-helper.h
     helper/udp-echo-helper.h
     model/application-packet-probe.h
     model/bulk-send-application.h
+    model/flow-onoff-application.h
+    model/flow-sink.h
     model/onoff-application.h
     model/packet-loss-counter.h
     model/packet-sink.h

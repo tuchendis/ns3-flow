@@ -3,6 +3,8 @@ namespace ns3 {
 
 NS_LOG_COMPONENT_DEFINE("FlowPointToPointChannel");
 
+NS_OBJECT_ENSURE_REGISTERED(FlowPointToPointChannel);
+
 TypeId FlowPointToPointChannel::GetTypeId(void) {
   static TypeId tid = TypeId("ns3::FlowPointToPointChannel")
       .SetParent<Channel>()
@@ -18,7 +20,7 @@ Ptr<NetDevice> FlowPointToPointChannel::GetDevice(std::size_t i) const {
   return DynamicCast<PointToPointChannel>(m_channels[0])->GetDevice(i);
 }
 
-void FlowPointToPointChannel::Attach(Ptr<ns3::PointToPointNetDevice> device) {
+void FlowPointToPointChannel::Attach(Ptr<ns3::QbbNetDevice> device) {
   DynamicCast<PointToPointChannel>(m_channels[0])->Attach(device);
   DynamicCast<LogicalFlowChannel>(m_channels[1])->Attach(device);
 }

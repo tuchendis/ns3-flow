@@ -21,6 +21,8 @@
 
 namespace ns3 {
 
+NS_LOG_COMPONENT_DEFINE("SwitchNode");
+
 TypeId SwitchNode::GetTypeId (void)
 {
 	static TypeId tid = TypeId ("ns3::SwitchNode")
@@ -111,6 +113,7 @@ int SwitchNode::GetOutDev(Ptr<const Packet> p, CustomHeader &ch) {
 
 int SwitchNode::GetOutDev(Ptr<const ns3::Flow> f) {
     auto fiveTuple = f->GetFiveTuple();
+//    std::cout << m_rtTable[0].first << std::endl;
     auto entry = m_rtTable.find(fiveTuple.destinationAddress.Get());
     if (entry == m_rtTable.end()) {
         return -1;
@@ -202,6 +205,7 @@ void SwitchNode::SendToDev(Ptr<Packet>p, CustomHeader &ch) {
 }
 
 bool SwitchNode::SendToDev(Ptr<ns3::Flow> f, DataRate rate) {
+    NS_LOG_INFO("Receive flow " << f->GetFiveTuple());
     int idx = GetOutDev(f);
     if (idx >= 0) {
         NS_ASSERT_MSG(m_devices[idx]->IsLinkUp(),

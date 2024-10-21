@@ -4,6 +4,8 @@ namespace ns3 {
 
 NS_LOG_COMPONENT_DEFINE("Flow");
 
+NS_OBJECT_ENSURE_REGISTERED(Flow);
+
 TypeId Flow::GetTypeId() {
   static TypeId tid = TypeId("ns3::Flow")
       .SetParent<Object>()

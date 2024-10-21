@@ -51,6 +51,7 @@ QbbHelper::QbbHelper ()
   m_deviceFactory.SetTypeId ("ns3::QbbNetDevice");
   m_channelFactory.SetTypeId ("ns3::QbbChannel");
   m_remoteChannelFactory.SetTypeId ("ns3::QbbRemoteChannel");
+  m_flowChannelFactory.SetTypeId("ns3::LogicalFlowChannel");
 }
 
 void 
@@ -269,7 +270,6 @@ QbbHelper::Install (Ptr<Node> a, Ptr<Node> b)
   //   }
   if (useNormalChannel)
     {
-
       channel = m_channelFactory.Create<QbbChannel> ();
     }
     else{
@@ -289,6 +289,11 @@ QbbHelper::Install (Ptr<Node> a, Ptr<Node> b)
 
   devA->Attach (channel);
   devB->Attach (channel);
+
+  Ptr<LogicalFlowChannel> flowChannel = m_flowChannelFactory.Create<LogicalFlowChannel>();
+  devA->Attach(flowChannel);
+  devB->Attach(flowChannel);
+
   container.Add (devA);
   container.Add (devB);
 

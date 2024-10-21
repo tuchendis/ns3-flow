@@ -41,6 +41,8 @@ build_lib(
   HEADER_FILES
     ${mpi_headers}
     helper/point-to-point-helper.h
+    model/logical-flow-channel.h
+    model/flow-point-to-point-channel.h
     model/point-to-point-channel.h
     model/point-to-point-net-device.h
     model/ppp-header.h
@@ -57,8 +59,7 @@ build_lib(
     model/switch-mmu.h
     model/switch-node.h
     model/trace-format.h
-    model/flow-point-to-point-channel.h
-    model/logical-flow-channel.h
+
     helper/qbb-helper.h
     helper/sim-setting.h
   LIBRARIES_TO_LINK ${libnetwork}

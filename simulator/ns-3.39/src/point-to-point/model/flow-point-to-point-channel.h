@@ -2,10 +2,10 @@
 #define FLOW_POINT_TO_POINT_CHANNEL_H
 
 #include "ns3/channel.h"
-#include "ns3/point-to-point-net-device.h"
 #include "ns3/logical-flow-channel.h"
 #include "ns3/point-to-point-channel.h"
 #include "ns3/ptr.h"
+#include "ns3/qbb-net-device.h"
 #include "ns3/nstime.h"
 #include "ns3/data-rate.h"
 #include "ns3/traced-callback.h"
@@ -24,7 +24,7 @@ class FlowPointToPointChannel : public Channel {
 
     FlowPointToPointChannel();
 
-    void Attach(Ptr<PointToPointNetDevice> device);
+    void Attach(Ptr<QbbNetDevice> device);
 
     std::size_t GetNDevices() const;
 

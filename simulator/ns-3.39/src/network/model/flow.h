@@ -23,6 +23,8 @@ class Flow : public Object {
         uint16_t destinationPort;       //!< Destination port
         uint8_t protocol;               //!< Protocol
 
+      FiveTuple() {}
+
       FiveTuple(Ipv4Address src, Ipv4Address dst, uint16_t srcPort, uint16_t dstPort, uint8_t proto)
             : sourceAddress(src),
               destinationAddress(dst),
@@ -30,6 +32,15 @@ class Flow : public Object {
               destinationPort(dstPort),
               protocol(proto) {}
     };
+
+    friend std::ostream& operator<<(std::ostream& os, const FiveTuple& tuple) {
+        os << "Source Address: " << tuple.sourceAddress << "\n"
+           << "Destination Address: " << tuple.destinationAddress << "\n"
+           << "Source Port: " << tuple.sourcePort << "\n"
+           << "Destination Port: " << tuple.destinationPort << "\n"
+           << "Protocol: " << static_cast<int>(tuple.protocol);
+        return os;
+    }
 
     Flow(void);
     Flow(FiveTuple fiveTuple, uint8_t priority);

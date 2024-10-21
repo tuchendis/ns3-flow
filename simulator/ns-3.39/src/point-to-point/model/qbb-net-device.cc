@@ -710,7 +710,7 @@ void QbbNetDevice::ReceiveFlow(Ptr<ns3::Flow> flow, DataRate rate) {
     if (m_node->GetNodeType() > 0) {
         m_node->SwitchReceiveFromDevice(this, flow, rate);
     } else {
-        //        m_rxFlowCallback()
+        m_rxFlowCallback(this, flow, rate);
     }
 }
 
@@ -718,7 +718,7 @@ void QbbNetDevice::SendFlow(Ptr<ns3::Flow> flow, DataRate rate) {
     if (!m_linkUp) {
         return;
     }
-    m_logicalChannel->Transmit(flow, rate);
+    m_logicalChannel->Transmit(flow, rate, this);
 }
 
 void

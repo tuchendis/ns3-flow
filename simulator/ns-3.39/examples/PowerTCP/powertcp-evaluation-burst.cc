@@ -859,7 +859,7 @@ int main(int argc, char *argv[])
 
 		fflush(stdout);
 
-		// Assigne server IP
+		// Assign server IP
 		// Note: this should be before the automatic assignment below (ipv4.Assign(d)),
 		// because we want our IP to be the primary IP (first in the IP address list),
 		// so that the global routing is based on our IP

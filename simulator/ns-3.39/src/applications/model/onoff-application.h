@@ -133,7 +133,7 @@ class OnOffApplication : public Application
   protected:
     void DoDispose() override;
 
-  private:
+//  private:
     // inherited from Application base class.
     void StartApplication() override; // Called at time specified by Start
     void StopApplication() override;  // Called at time specified by Stop
@@ -142,26 +142,21 @@ class OnOffApplication : public Application
     /**
      * \brief Cancel all pending events.
      */
-    void CancelEvents();
+    virtual void CancelEvents();
 
     // Event handlers
     /**
      * \brief Start an On period
      */
-    void StartSending();
+    virtual void StartSending();
     /**
      * \brief Start an Off period
      */
-    void StopSending();
+    virtual void StopSending();
     /**
      * \brief Send a packet
      */
     void SendPacket();
-
-    /** Modification
-     * Wenkai Li
-     */
-    void SendFlow();
 
     Ptr<Socket> m_socket;                //!< Associated socket
     Address m_peer;                      //!< Peer address
@@ -194,7 +189,6 @@ class OnOffApplication : public Application
     TracedCallback<Ptr<const Packet>, const Address&, const Address&, const SeqTsSizeHeader&>
         m_txTraceWithSeqTsSize;
 
-  private:
     /**
      * \brief Schedule the next packet transmission
      */
@@ -202,21 +196,21 @@ class OnOffApplication : public Application
     /**
      * \brief Schedule the next On period start
      */
-    void ScheduleStartEvent();
+    virtual void ScheduleStartEvent();
     /**
      * \brief Schedule the next Off period start
      */
-    void ScheduleStopEvent();
+    virtual void ScheduleStopEvent();
     /**
      * \brief Handle a Connection Succeed event
      * \param socket the connected socket
      */
-    void ConnectionSucceeded(Ptr<Socket> socket);
+    virtual void ConnectionSucceeded(Ptr<Socket> socket);
     /**
      * \brief Handle a Connection Failed event
      * \param socket the not connected socket
      */
-    void ConnectionFailed(Ptr<Socket> socket);
+    virtual void ConnectionFailed(Ptr<Socket> socket);
 };
 
 } // namespace ns3

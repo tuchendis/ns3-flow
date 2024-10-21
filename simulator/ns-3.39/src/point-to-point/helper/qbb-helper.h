@@ -195,6 +195,12 @@ private:
   ObjectFactory m_channelFactory;
   ObjectFactory m_remoteChannelFactory;
   ObjectFactory m_deviceFactory;
+
+  /**
+   * Modification
+   * Wenkai Li
+   */
+  ObjectFactory m_flowChannelFactory;
 };
 
 } // namespace ns3

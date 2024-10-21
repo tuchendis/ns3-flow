@@ -24,6 +24,7 @@
 #include "ns3/qbb-channel.h"
 //#include "ns3/fivetuple.h"
 #include "ns3/event-id.h"
+#include "ns3/flow-point-to-point-channel.h"
 #include "ns3/logical-flow-channel.h"
 #include "ns3/broadcom-egress-queue.h"
 #include "ns3/ipv4.h"
@@ -36,6 +37,8 @@
 // #define ENABLE_QP 1
 
 namespace ns3 {
+
+class LogicalFlowChannel;
 
 class RdmaEgressQueue : public Object{
 public:
