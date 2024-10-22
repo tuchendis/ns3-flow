@@ -42,6 +42,8 @@ private:
 	static uint32_t EcmpHash(const uint8_t* key, size_t len, uint32_t seed);
 	void CheckAndSendPfc(uint32_t inDev, uint32_t qIndex);
 	void CheckAndSendResume(uint32_t inDev, uint32_t qIndex);
+
+    std::map<Ptr<Flow>, int> m_forward;
 public:
 	Ptr<SwitchMmu> m_mmu;
 
@@ -52,11 +54,11 @@ public:
 	void ClearTable();
 	bool SwitchReceiveFromDevice(Ptr<NetDevice> device, Ptr<Packet> packet, CustomHeader &ch);
 	void SwitchNotifyDequeue(uint32_t ifIndex, uint32_t qIndex, Ptr<Packet> p);
-    bool SwitchReceiveFromDevice(Ptr<NetDevice> device, Ptr<Flow> flow, DataRate rate);
+    void SwitchReceiveFromDevice(Ptr<NetDevice> device, std::map<Ptr<Flow>, DataRate>& flows);
     int GetOutDev(Ptr<const Packet>p, CustomHeader &ch);
     void SendToDev(Ptr<Packet>p, CustomHeader &ch);
     int GetOutDev(Ptr<const Flow> f);
-    bool SendToDev(Ptr<Flow> f, DataRate rate);
+    void SendToDev(Ptr<Flow> f, DataRate rate);
 
 	// for approximate calc in PINT
 	int logres_shift(int b, int l);

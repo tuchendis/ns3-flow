@@ -31,6 +31,9 @@ class Flow : public Object {
               sourcePort(srcPort),
               destinationPort(dstPort),
               protocol(proto) {}
+
+      bool operator<(const FiveTuple& other) const;
+      bool operator==(const FiveTuple& other) const;
     };
 
     friend std::ostream& operator<<(std::ostream& os, const FiveTuple& tuple) {
@@ -52,14 +55,16 @@ class Flow : public Object {
     FiveTuple GetFiveTuple() const;
     FiveTuple SetFiveTuple(FiveTuple fiveTuple);
     uint8_t GetPriority() const;
+
+    friend bool operator<(const Flow& f1, const Flow& f2);
+    friend bool operator==(const Flow& f1, const Flow& f2);
+
   private:
     FiveTuple m_fiveTuple;
     uint8_t m_priority;
 };
 
-bool operator<(const Flow::FiveTuple& t1, const Flow::FiveTuple& t2);
 
-bool operator==(const Flow::FiveTuple& t1, const Flow::FiveTuple& t2);
 
 } // namespace ns3
 

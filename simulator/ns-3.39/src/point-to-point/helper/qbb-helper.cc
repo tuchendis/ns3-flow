@@ -81,6 +81,10 @@ QbbHelper::SetChannelAttribute (std::string n1, const AttributeValue &v1)
   // m_remoteChannelFactory.Set (n1, v1);
 }
 
+void QbbHelper::SetFlowChannelAttribute(std::string name, const ns3::AttributeValue& value) {
+  m_flowChannelFactory.Set(name, value);
+}
+
 void 
 QbbHelper::EnablePcapInternal (std::string prefix, Ptr<NetDevice> nd, bool promiscuous, bool explicitFilename)
 {

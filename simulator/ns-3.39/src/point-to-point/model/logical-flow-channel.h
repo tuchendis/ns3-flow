@@ -14,6 +14,7 @@
 namespace ns3 {
 
 class Flow;
+class QbbNetDevice;
 class FlowPointToPointChannel;
 
 class LogicalFlowChannel : public Channel {
@@ -30,18 +31,21 @@ class LogicalFlowChannel : public Channel {
 
     void Attach(Ptr<QbbNetDevice> netDevice);
 
-    bool Transmit(Ptr<Flow> flow, DataRate rate, Ptr<QbbNetDevice> src);
+    void CalculateBandWidths();
+
+    void Transmit(Ptr<Flow> flow, DataRate rate, Ptr<QbbNetDevice> src);
 
   private:
     static const std::size_t N_DEVICES = 2;
     std::size_t m_nDevices;
 
     Time m_delay;
-    DataRate m_bps;
+    DataRate m_bps; // channel rate
     Ptr<FlowPointToPointChannel> m_flowChannel;
     Ptr<QbbNetDevice> m_netDevice;
 
-    std::map<Flow::FiveTuple, DataRate> m_flows; // Output flow rate
+    std::map<Ptr<Flow>, DataRate> m_flows; // Output flow rate
+    DataRate m_totalInputRate;
 
     class Link {
       public:

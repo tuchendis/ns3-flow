@@ -204,18 +204,24 @@ void SwitchNode::SendToDev(Ptr<Packet>p, CustomHeader &ch) {
 	return; // Drop
 }
 
-bool SwitchNode::SendToDev(Ptr<ns3::Flow> f, DataRate rate) {
+void SwitchNode::SendToDev(Ptr<Flow> f, DataRate rate) {
     NS_LOG_INFO("Receive flow " << f->GetFiveTuple());
-    int idx = GetOutDev(f);
+    if (m_forward.find(f) == m_forward.end()) {
+        int idx = GetOutDev(f);
+        m_forward[f] = idx;
+        Ptr<QbbNetDevice> qbb = DynamicCast<QbbNetDevice>(m_devices[idx]);
+        qbb->m_totalEngressRate += rate;
+        qbb->m_engressFlows.insert(std::make_pair(f, rate));
+    }
+    int idx = m_forward[f];
     if (idx >= 0) {
         NS_ASSERT_MSG(m_devices[idx]->IsLinkUp(),
                       "The routing table look up should return link that is up");
         DynamicCast<QbbNetDevice>(m_devices[idx])->SendFlow(f, rate);
-        return true;
+        return;
     }
 
     std::cout << "outdev not found! Dropped. This should not happen. Debugging required!" << std::endl;
-    return false; // Drop
 }
 
 uint32_t SwitchNode::EcmpHash(const uint8_t* key, size_t len, uint32_t seed) {
@@ -275,8 +281,26 @@ bool SwitchNode::SwitchReceiveFromDevice(Ptr<NetDevice> device, Ptr<Packet> pack
 	return true;
 }
 
-bool SwitchNode::SwitchReceiveFromDevice(Ptr<ns3::NetDevice> device, Ptr<ns3::Flow> flow, ns3::DataRate rate) {
-    return SendToDev(flow, rate);
+void SwitchNode::SwitchReceiveFromDevice(Ptr<NetDevice> device, std::map<Ptr<Flow>,DataRate>& flows) {
+    for (const auto& pair : flows) {
+        if (m_forward.find(pair.first) != m_forward.end()) {
+            continue;
+        }
+        int idx = GetOutDev(pair.first);
+        m_forward.insert(std::make_pair(pair.first, idx));
+
+        Ptr<QbbNetDevice> qbb = DynamicCast<QbbNetDevice>(m_devices[idx]);
+        qbb->m_totalEngressRate -= qbb->m_engressFlows[pair.first];
+        qbb->m_totalEngressRate += pair.second;
+        if (pair.second == 0) {
+            qbb->m_engressFlows.erase(pair.first);
+        } else {
+            qbb->m_engressFlows.insert_or_assign(pair.first, pair.second);
+        }
+    }
+    for (const auto& pair : flows) {
+        SendToDev(pair.first, pair.second);
+    }
 }
 
 void SwitchNode::SwitchNotifyDequeue(uint32_t ifIndex, uint32_t qIndex, Ptr<Packet> p) {

@@ -31,7 +31,6 @@ std::ifstream topof, flowf, tracef;
 NetDeviceContainer switchToSwitchInterfaces;
 std::map< uint32_t, std::map< uint32_t, std::vector<Ptr<QbbNetDevice>> > > switchToSwitch;
 
-// vamsi
 std::map<uint32_t, uint32_t> switchNumToId;
 std::map<uint32_t, uint32_t> switchIdToNum;
 std::map<uint32_t, NetDeviceContainer> switchUp;
@@ -150,6 +149,9 @@ Ipv4Address node_id_to_ip(uint32_t id) {
 int main(int argc, char *argv[]) {
     LogComponentEnable("GENERIC_SIMULATION", LOG_LEVEL_INFO);
 
+    std::string AppPacketRate("10Mbps");
+    Config::SetDefault("ns3::OnOffApplication::DataRate", StringValue(AppPacketRate));
+
     NS_LOG_INFO("Create nodes.");
 
     Ptr<SwitchNode> sw1 = CreateObject<SwitchNode>();
@@ -173,6 +175,7 @@ int main(int argc, char *argv[]) {
     std::string data_rate = "25000000000.0", link_daley = "1us";
     qbb.SetDeviceAttribute("DataRate", StringValue(data_rate));
     qbb.SetChannelAttribute("Delay", StringValue(link_daley));
+    qbb.SetFlowChannelAttribute("DataRate", StringValue(AppPacketRate));
 
     NetDeviceContainer d = qbb.Install(src, dst);
     Ptr<Ipv4> ipv4Src = src->GetObject<Ipv4>();
@@ -204,7 +207,6 @@ int main(int argc, char *argv[]) {
 
     NS_LOG_INFO("Setup CBR Traffic Sources.");
 
-    std::string AppPacketRate("10MBps");
     Ipv4InterfaceAddress ipv4DstIntAddr = ipv4Dst->GetAddress(1, 0);
     Ipv4Address ipDstAddr = ipv4DstIntAddr.GetLocal();
     u_int16_t port = 9;

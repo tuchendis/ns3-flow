@@ -335,7 +335,7 @@ class Node : public Object
 public:
   virtual bool SwitchReceiveFromDevice(Ptr<NetDevice> device, Ptr<Packet> packet, CustomHeader &ch);
   virtual void SwitchNotifyDequeue(uint32_t ifIndex, uint32_t qIndex, Ptr<Packet> p);
-  virtual bool SwitchReceiveFromDevice(Ptr<NetDevice> device, Ptr<Flow> flow, DataRate rate);
+  virtual void SwitchReceiveFromDevice(Ptr<NetDevice> device, std::map<Ptr<Flow>, DataRate>& flows);
 /* Modification */
 };
 

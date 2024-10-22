@@ -434,7 +434,7 @@ void Node::SwitchNotifyDequeue(uint32_t ifIndex, uint32_t qIndex, Ptr<Packet> p)
   NS_ASSERT_MSG(false, "Calling NotifyDequeue() on a non-switch node or this function is not implemented");
 }
 
-bool Node::SwitchReceiveFromDevice(Ptr<ns3::NetDevice> device, Ptr<ns3::Flow> flow, ns3::DataRate rate) {
+void Node::SwitchReceiveFromDevice(Ptr<ns3::NetDevice> device, std::map<Ptr<ns3::Flow>, DataRate>& flows) {
   NS_ASSERT_MSG(false, "Calling SwitchReceiveFromDevice() on a non-switch node or this function is not implemented");
 }
 /* Modification */ 

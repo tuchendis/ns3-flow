@@ -48,51 +48,22 @@ uint8_t Flow::GetPriority() const {
     return m_priority;
 }
 
-bool operator<(const Flow::FiveTuple& t1, const Flow::FiveTuple& t2) {
-    if (t1.sourceAddress < t2.sourceAddress) {
-        return true;
-    }
-    if (t1.sourceAddress != t2.sourceAddress) {
-        return false;
-    }
-
-    if (t1.destinationAddress < t2.destinationAddress) {
-        return true;
-    }
-    if (t1.destinationAddress != t2.destinationAddress) {
-        return false;
-    }
-
-    if (t1.protocol < t2.protocol) {
-        return true;
-    }
-    if (t1.protocol != t2.protocol) {
-        return false;
-    }
-
-    if (t1.sourcePort < t2.sourcePort) {
-        return true;
-    }
-    if (t1.sourcePort != t2.sourcePort) {
-        return false;
-    }
-
-    if (t1.destinationPort < t2.destinationPort) {
-        return true;
-    }
-    if (t1.destinationPort != t2.destinationPort) {
-        return false;
-    }
-
-    return false;
+bool Flow::FiveTuple::operator<(const ns3::Flow::FiveTuple& other) const {
+    return std::tie(sourceAddress, destinationAddress, sourcePort, destinationPort, protocol) <
+           std::tie(other.sourceAddress, other.destinationAddress, other.sourcePort, other.destinationPort, other.protocol);
 }
 
-bool operator==(const Flow::FiveTuple& t1, const Flow::FiveTuple& t2) {
-  return (t1.sourceAddress == t2.sourceAddress &&
-      t1.destinationAddress == t2.destinationAddress &&
-      t1.protocol == t2.protocol &&
-      t1.sourcePort == t2.sourcePort &&
-      t1.destinationPort == t2.destinationPort);
+bool Flow::FiveTuple::operator==(const ns3::Flow::FiveTuple& other) const {
+    return std::tie(sourceAddress, destinationAddress, sourcePort, destinationPort, protocol) ==
+           std::tie(other.sourceAddress, other.destinationAddress, other.sourcePort, other.destinationPort, other.protocol);
+}
+
+bool operator<(const Flow& f1, const Flow& f2) {
+    return f1.m_fiveTuple < f2.m_fiveTuple;
+}
+
+bool operator==(const Flow& f1, const Flow& f2) {
+    return f1.m_fiveTuple == f2.m_fiveTuple;
 }
 
 } // namespace ns3

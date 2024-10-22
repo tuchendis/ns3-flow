@@ -183,7 +183,7 @@ public:
      */
     bool Attach(Ptr<LogicalFlowChannel> ch);
 
-    virtual void ReceiveFlow(Ptr<Flow> flow, DataRate rate);
+    virtual void ReceiveFlow(std::map<Ptr<Flow>, DataRate>& flows);
 
     virtual void SendFlow(Ptr<Flow> flow, DataRate rate);
 
@@ -281,9 +281,9 @@ public:
      */
     ReceiveFlowCallback m_rxFlowCallback;
 
-    std::map<Flow::FiveTuple, DataRate> m_flows; // Input flow rate
     Ptr<LogicalFlowChannel> m_logicalChannel; // flow channel
-    DataRate m_totalInputRate;
+    std::map<Ptr<Flow>, DataRate> m_engressFlows;
+    DataRate m_totalEngressRate;
 };
 
 } // namespace ns3

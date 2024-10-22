@@ -700,17 +700,20 @@ bool QbbNetDevice::Attach(Ptr<ns3::LogicalFlowChannel> ch) {
     return true;
 }
 
-void QbbNetDevice::ReceiveFlow(Ptr<ns3::Flow> flow, DataRate rate) {
-    NS_LOG_FUNCTION(this << flow);
+
+void QbbNetDevice::ReceiveFlow(std::map<Ptr<Flow>, DataRate>& flows) {
+//    NS_LOG_FUNCTION(this << flows);
     if (!m_linkUp) {
         //        m_traceDrop(flow, 0);
         return;
     }
 
     if (m_node->GetNodeType() > 0) {
-        m_node->SwitchReceiveFromDevice(this, flow, rate);
+        m_node->SwitchReceiveFromDevice(this, flows);
     } else {
-        m_rxFlowCallback(this, flow, rate);
+        for (const auto& pair : flows) {
+            m_rxFlowCallback(this, pair.first, pair.second);
+        }
     }
 }
 

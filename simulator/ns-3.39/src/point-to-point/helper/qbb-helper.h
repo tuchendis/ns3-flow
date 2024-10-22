@@ -101,6 +101,7 @@ public:
    */
   void SetChannelAttribute (std::string name, const AttributeValue &value);
 
+  void SetFlowChannelAttribute(std::string name, const AttributeValue &value);
   /**
    * \param c a set of nodes
    *
