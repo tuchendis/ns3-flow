@@ -18,7 +18,7 @@ class DataRate;
 
 class FlowOnOffHelper {
   public:
-    FlowOnOffHelper(std::string protocol, Address address);
+    FlowOnOffHelper(std::string protocol, Address srcAddr, Address dstAddr);
 
     void SetAttribute(std::string name, const AttributeValue& value);
 

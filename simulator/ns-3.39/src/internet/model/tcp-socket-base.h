@@ -592,7 +592,7 @@ class TcpSocketBase : public TcpSocket
     int ShutdownSend() override; // Assert the m_shutdownSend flag to prevent send to network
     int ShutdownRecv() override; // Assert the m_shutdownRecv flag to prevent forward to app
     int Send(Ptr<Packet> p, uint32_t flags) override; // Call by app to send data to network
-    int SendFlow(Ptr<Flow> f, DataRate rate) override;
+    void SendFlow(Ptr<Flow> f, DataRate rate) override;
     int SendTo(Ptr<Packet> p,
                uint32_t flags,
                const Address& toAddress) override; // Same as Send(), toAddress is insignificant

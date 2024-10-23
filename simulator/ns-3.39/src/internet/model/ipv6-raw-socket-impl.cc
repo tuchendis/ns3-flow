@@ -230,7 +230,7 @@ Ipv6RawSocketImpl::Send(Ptr<Packet> p, uint32_t flags)
     return SendTo(p, flags, to);
 }
 
-int Ipv6RawSocketImpl::SendFlow(Ptr<ns3::Flow> f, ns3::DataRate rate) {
+void Ipv6RawSocketImpl::SendFlow(Ptr<ns3::Flow> f, ns3::DataRate rate) {
     throw std::runtime_error("doSomething is not supported in UnsupportedDerived");
 }
 

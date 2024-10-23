@@ -226,7 +226,7 @@ class Node : public Object
   void SetNodeType(uint32_t type){m_node_type=type;}
   /* Modification */
 
-  protected:
+//  protected:
     /**
      * The dispose method. Subclasses must override this method
      * and must chain up to it by calling Node::DoDispose at the

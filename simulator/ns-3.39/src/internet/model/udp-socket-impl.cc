@@ -469,7 +469,7 @@ UdpSocketImpl::Send(Ptr<Packet> p, uint32_t flags)
     return DoSend(p);
 }
 
-int UdpSocketImpl::SendFlow(Ptr<ns3::Flow> f, ns3::DataRate rate) {
+void UdpSocketImpl::SendFlow(Ptr<ns3::Flow> f, ns3::DataRate rate) {
     Ipv4Address dest = Ipv4Address::ConvertFrom(m_defaultAddress);
     Flow::FiveTuple fiveTuple(m_endPoint->GetLocalAddress(),
         dest,
@@ -477,7 +477,18 @@ int UdpSocketImpl::SendFlow(Ptr<ns3::Flow> f, ns3::DataRate rate) {
         m_defaultPort,
         0x11);
     f->SetFiveTuple(fiveTuple);
-    DynamicCast<SwitchNode>(m_node)->SendToDev(f, rate);
+
+    Ptr<SwitchNode> sw = DynamicCast<SwitchNode>(m_node);
+    int idx = sw->GetOutDev(f);
+    Ptr<QbbNetDevice> dev = DynamicCast<QbbNetDevice>(sw->m_devices[idx]);
+    dev->m_totalEngressRate -= dev->m_engressFlows[f];
+    if (rate == 0) {
+        dev->m_engressFlows.erase(f);
+    } else {
+        dev->m_engressFlows.insert_or_assign(f, rate);
+        dev->m_totalEngressRate += rate;
+    }
+    dev->SendFlows();
 }
 
 int

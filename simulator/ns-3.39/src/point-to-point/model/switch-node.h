@@ -58,7 +58,6 @@ public:
     int GetOutDev(Ptr<const Packet>p, CustomHeader &ch);
     void SendToDev(Ptr<Packet>p, CustomHeader &ch);
     int GetOutDev(Ptr<const Flow> f);
-    void SendToDev(Ptr<Flow> f, DataRate rate);
 
 	// for approximate calc in PINT
 	int logres_shift(int b, int l);

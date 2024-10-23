@@ -11,10 +11,11 @@
 
 namespace ns3 {
 
-FlowOnOffHelper::FlowOnOffHelper(std::string protocol, ns3::Address address) {
+FlowOnOffHelper::FlowOnOffHelper(std::string protocol, ns3::Address srcAddr, ns3::Address dstAddr) {
     m_factory.SetTypeId("ns3::FlowOnOffApplication");
     m_factory.Set("Protocol", StringValue(protocol));
-    m_factory.Set("Remote",  AddressValue(address));
+    m_factory.Set("Local", AddressValue(srcAddr));
+    m_factory.Set("Remote",  AddressValue(dstAddr));
 }
 
 void FlowOnOffHelper::SetAttribute(std::string name, const ns3::AttributeValue& value) {

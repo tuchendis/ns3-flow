@@ -239,7 +239,7 @@ public:
    * \param bytes The number of bytes (not bits) for which to calculate
    * \return The transmission time for the number of bytes specified
    */
-  Time CalculateBytesTxTime (uint32_t bytes) const;
+  Time CalculateBytesTxTime (uint64_t bytes) const;
 
   /**
    * \brief Calculate transmission time
@@ -248,7 +248,7 @@ public:
    * \param bits The number of bits (not bytes) for which to calculate
    * \return The transmission time for the number of bits specified
    */
-  Time CalculateBitsTxTime (uint32_t bits) const;
+  Time CalculateBitsTxTime (uint64_t bits) const;
 
   double CalculateTxTime (uint32_t bytes){return CalculateBytesTxTime(bytes).GetSeconds();}
 

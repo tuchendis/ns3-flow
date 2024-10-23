@@ -374,7 +374,7 @@ Node::ReceiveFromDevice(Ptr<NetDevice> device,
 }
 
 bool Node::ReceiveFlowFromDevice(Ptr<ns3::NetDevice> device, Ptr<const ns3::Flow> flow, DataRate rate) {
-    std::cout << "Receive from " << flow->GetFiveTuple().sourceAddress << " rate : " << rate << std::endl;
+    std::cout << "Receive from " << flow->GetFiveTuple().sourceAddress << " rate : " << rate << " at " << Simulator::Now() << std::endl;
     return true;
 }
 

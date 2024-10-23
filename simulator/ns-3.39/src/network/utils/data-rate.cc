@@ -201,12 +201,12 @@ namespace ns3 {
         return m_bps != rhs.m_bps;
     }
 
-    Time DataRate::CalculateBytesTxTime(uint32_t bytes) const {
+    Time DataRate::CalculateBytesTxTime(uint64_t bytes) const {
         NS_LOG_FUNCTION(this << bytes);
         return Seconds(bytes * 8) / m_bps;
     }
 
-    Time DataRate::CalculateBitsTxTime(uint32_t bits) const {
+    Time DataRate::CalculateBitsTxTime(uint64_t bits) const {
         NS_LOG_FUNCTION(this << bits);
         return Seconds(bits) / m_bps;
     }

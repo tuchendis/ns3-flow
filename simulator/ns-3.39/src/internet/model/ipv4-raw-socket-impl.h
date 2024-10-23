@@ -63,7 +63,7 @@ class Ipv4RawSocketImpl : public Socket
     int Listen() override;
     uint32_t GetTxAvailable() const override;
     int Send(Ptr<Packet> p, uint32_t flags) override;
-    int SendFlow(Ptr<Flow> f, DataRate rate) override;
+    void SendFlow(Ptr<Flow> f, DataRate rate) override;
     int SendTo(Ptr<Packet> p, uint32_t flags, const Address& toAddress) override;
     uint32_t GetRxAvailable() const override;
     Ptr<Packet> Recv(uint32_t maxSize, uint32_t flags) override;

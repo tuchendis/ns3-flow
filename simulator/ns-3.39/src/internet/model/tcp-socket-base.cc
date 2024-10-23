@@ -951,7 +951,7 @@ TcpSocketBase::Send(Ptr<Packet> p, uint32_t flags)
     }
 }
 
-int TcpSocketBase::SendFlow(Ptr<ns3::Flow> f, ns3::DataRate rate) {
+void TcpSocketBase::SendFlow(Ptr<ns3::Flow> f, ns3::DataRate rate) {
     throw std::runtime_error("doSomething is not supported in UnsupportedDerived");
 }
 

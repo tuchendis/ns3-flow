@@ -17,10 +17,14 @@ TypeId LogicalFlowChannel::GetTypeId() {
   static TypeId tid = TypeId("ns3::LogicalFlowChannel")
       .SetParent<Object>()
       .AddConstructor<LogicalFlowChannel>()
-      .AddAttribute("DataRate", "Propagation delay through the channel",
+      .AddAttribute("DataRate", "Bandwidth of the channel",
           DataRateValue( 0),
           MakeDataRateAccessor(&LogicalFlowChannel::m_bps),
-          MakeDataRateChecker());
+          MakeDataRateChecker())
+      .AddAttribute ("Delay", "Propagation delay through the channel",
+          TimeValue (Seconds (0)),
+          MakeTimeAccessor (&LogicalFlowChannel::m_delay),
+          MakeTimeChecker ());
   return tid;
 }
 
@@ -52,20 +56,23 @@ void LogicalFlowChannel::Attach(Ptr<QbbNetDevice> netDevice) {
   }
 }
 
-void LogicalFlowChannel::CalculateBandWidths() {
-
-}
-
-void LogicalFlowChannel::Transmit(Ptr<Flow> flow, DataRate rate, Ptr<QbbNetDevice> src) {
+void LogicalFlowChannel::Transmit(std::map<Ptr<Flow>, DataRate>& flows, Ptr<QbbNetDevice> src) {
     uint32_t wire = src == m_links[0].m_src ? 0 : 1;
-    m_totalInputRate -= m_flows[flow];
-    m_totalInputRate += rate;
 
-    if (rate == 0) {
-        m_flows.erase(flow);
-    } else {
-        std::cout << rate / src->m_totalEngressRate << std::endl;
-        m_flows.insert_or_assign(flow, rate / src->m_totalEngressRate * m_bps);
+    for (const auto& pair : flows) {
+        Ptr<Flow> flow = pair.first;
+        DataRate rate = pair.second;
+        if (rate == 0) {
+            m_flows.erase(flow);
+        } else {
+            std::cout << rate / src->m_totalEngressRate << std::endl;
+            DataRate frate = rate / src->m_totalEngressRate * m_bps;
+            if (rate < frate) {
+                frate = rate;
+            }
+            m_flows.insert_or_assign(flow, frate);
+        }
+        std::cout << "Channel sends " << flow->GetFiveTuple() << " rate : " << rate << " at " << Simulator::Now() << std::endl;
     }
 
     Simulator::ScheduleWithContext(m_links[wire].m_dst->GetNode ()->GetId (),

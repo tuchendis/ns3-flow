@@ -701,7 +701,7 @@ bool QbbNetDevice::Attach(Ptr<ns3::LogicalFlowChannel> ch) {
 }
 
 
-void QbbNetDevice::ReceiveFlow(std::map<Ptr<Flow>, DataRate>& flows) {
+void QbbNetDevice::ReceiveFlow(std::map<Ptr<Flow>, DataRate> flows) {
 //    NS_LOG_FUNCTION(this << flows);
     if (!m_linkUp) {
         //        m_traceDrop(flow, 0);
@@ -717,11 +717,11 @@ void QbbNetDevice::ReceiveFlow(std::map<Ptr<Flow>, DataRate>& flows) {
     }
 }
 
-void QbbNetDevice::SendFlow(Ptr<ns3::Flow> flow, DataRate rate) {
+void QbbNetDevice::SendFlows() {
     if (!m_linkUp) {
         return;
     }
-    m_logicalChannel->Transmit(flow, rate, this);
+    m_logicalChannel->Transmit(m_engressFlows, this);
 }
 
 void

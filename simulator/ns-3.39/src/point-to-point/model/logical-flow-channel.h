@@ -31,9 +31,9 @@ class LogicalFlowChannel : public Channel {
 
     void Attach(Ptr<QbbNetDevice> netDevice);
 
-    void CalculateBandWidths();
+    void Transmit(std::map<Ptr<Flow>, DataRate>& flows, Ptr<QbbNetDevice> src);
 
-    void Transmit(Ptr<Flow> flow, DataRate rate, Ptr<QbbNetDevice> src);
+    std::map<Ptr<Flow>, DataRate> m_flows; // Output flow rate
 
   private:
     static const std::size_t N_DEVICES = 2;
@@ -43,9 +43,6 @@ class LogicalFlowChannel : public Channel {
     DataRate m_bps; // channel rate
     Ptr<FlowPointToPointChannel> m_flowChannel;
     Ptr<QbbNetDevice> m_netDevice;
-
-    std::map<Ptr<Flow>, DataRate> m_flows; // Output flow rate
-    DataRate m_totalInputRate;
 
     class Link {
       public:

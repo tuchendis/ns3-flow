@@ -272,7 +272,7 @@ PacketSocket::Send(Ptr<Packet> p, uint32_t flags)
     return SendTo(p, flags, m_destAddr);
 }
 
-int PacketSocket::SendFlow(Ptr<ns3::Flow> f, ns3::DataRate rate) {
+void PacketSocket::SendFlow(Ptr<ns3::Flow> f, ns3::DataRate rate) {
     throw std::runtime_error("doSomething is not supported in UnsupportedDerived");
 }
 

@@ -183,9 +183,9 @@ public:
      */
     bool Attach(Ptr<LogicalFlowChannel> ch);
 
-    virtual void ReceiveFlow(std::map<Ptr<Flow>, DataRate>& flows);
+    virtual void ReceiveFlow(std::map<Ptr<Flow>, DataRate> flows);
 
-    virtual void SendFlow(Ptr<Flow> flow, DataRate rate);
+    virtual void SendFlows();
 
     typedef Callback<bool, Ptr<NetDevice>, Ptr<const Flow>, DataRate>
         ReceiveFlowCallback;
@@ -283,6 +283,9 @@ public:
 
     Ptr<LogicalFlowChannel> m_logicalChannel; // flow channel
     std::map<Ptr<Flow>, DataRate> m_engressFlows;
+    std::map<Ptr<Flow>, Time> m_lastSend;
+    std::map<Ptr<Flow>, EventId> m_engressEnd;
+    std::map<Ptr<Flow>, uint64_t> m_engressBits;
     DataRate m_totalEngressRate;
 };
 
